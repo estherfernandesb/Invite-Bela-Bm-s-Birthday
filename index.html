@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trigésima Noite — Reunião Secreta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0c0a0b;
+    --wine:#5c0e1e;
+    --wine-deep:#2c0912;
+    --wine-bright:#8a1728;
+    --charcoal:#231f1e;
+    --umber:#43301f;
+    --bone:#cdbfa9;
+    --bone-dim:#8f8172;
+    --gold:#9c7a3f;
+    --line: rgba(156,122,63,.35);
+  }
+  *{box-sizing:border-box; -webkit-text-size-adjust:100%; text-size-adjust:100%;}
+  html{scroll-behavior:smooth; overflow-x:hidden;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--bone);
+    font-family:'EB Garamond', serif;
+    overflow-x:hidden;
+    width:100%;
+    max-width:100vw;
+  }
+  img, svg, iframe{ max-width:100%; }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  /* ---------- ambient fog ---------- */
+  .fog{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(92,14,30,.18), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 85% 85%, rgba(67,48,31,.22), transparent 60%),
+      radial-gradient(ellipse 80% 60% at 50% 100%, rgba(0,0,0,.6), transparent 70%);
+    mix-blend-mode:screen;
+  }
+  .grain{
+    position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  section{position:relative; z-index:2;}
+
+  .eyebrow{
+    font-family:'Cinzel', serif;
+    letter-spacing:clamp(.12em,1.2vw,.35em);
+    text-transform:uppercase;
+    font-size:clamp(.6rem,2.6vw,.72rem);
+    color:var(--gold);
+  }
+
+  /* ---------- divider ---------- */
+  .divider{
+    display:flex; align-items:center; justify-content:center;
+    gap:18px; margin:0 auto; padding:48px 20px;
+    max-width:640px;
+  }
+  .divider .rule{flex:1; height:1px; background:linear-gradient(90deg, transparent, var(--line), transparent);}
+  .divider svg{width:34px; height:34px; opacity:.85;}
+
+  /* =========================================================
+     SECTION 1 — CONVITE
+  ========================================================== */
+  .invite{
+    min-height:100vh;
+    min-height:100svh;
+    display:flex; align-items:flex-start; justify-content:center;
+    padding:clamp(28px,6vw,56px) clamp(12px,4vw,20px) clamp(40px,8vw,60px);
+    position:relative;
+  }
+  .invite::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      radial-gradient(circle at 50% 18%, rgba(92,14,30,.35), transparent 45%),
+      linear-gradient(180deg, var(--ink) 0%, #150c0e 55%, var(--ink) 100%);
+    z-index:-1;
+  }
+
+  .moon{
+    width:clamp(44px,10vw,64px); height:clamp(44px,10vw,64px); margin:0 auto 22px;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 32%, #f4e9d2, var(--bone-dim) 70%);
+    box-shadow: 0 0 40px 6px rgba(205,191,169,.25), 0 0 90px 20px rgba(92,14,30,.25);
+    animation: pulse 6s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ box-shadow: 0 0 40px 6px rgba(205,191,169,.2), 0 0 90px 20px rgba(92,14,30,.2);}
+    50%{ box-shadow: 0 0 55px 10px rgba(205,191,169,.4), 0 0 120px 30px rgba(92,14,30,.35);}
+  }
+
+  .card{
+    max-width:620px;
+    width:100%;
+    text-align:center;
+    border:1px solid var(--line);
+    padding:clamp(32px,8vw,56px) clamp(18px,6vw,42px) clamp(30px,7vw,50px);
+    position:relative;
+    background: linear-gradient(180deg, rgba(35,31,30,.55), rgba(12,10,11,.75));
+    backdrop-filter: blur(2px);
+    word-wrap:break-word;
+    overflow-wrap:break-word;
+  }
+  .card::before, .card::after{
+    content:"";
+    position:absolute; width:26px; height:26px;
+    border:1px solid var(--gold);
+    opacity:.7;
+  }
+  .card::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .card::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+
+  .title{
+    font-family:'UnifrakturMaguntia', cursive;
+    font-size:clamp(2.6rem, 8vw, 4.6rem);
+    color:var(--wine-bright);
+    text-shadow:0 0 30px rgba(138,23,40,.55), 0 2px 0 #000;
+    margin:10px 0 6px;
+    line-height:1.05;
+  }
+  .subtitle{
+    font-family:'Cinzel', serif;
+    letter-spacing:clamp(.04em,.8vw,.12em);
+    font-size:clamp(.8rem,3vw,1rem);
+    color:var(--bone);
+    text-transform:uppercase;
+    margin-bottom:30px;
+  }
+  .desc{
+    font-size:clamp(1rem,3.6vw,1.18rem);
+    line-height:1.75;
+    color:var(--bone-dim);
+    max-width:480px;
+    margin:0 auto 30px;
+    font-style:italic;
+  }
+  .desc .name{ color:var(--bone); font-style:normal; }
+
+  .dresscode-label{
+    font-family:'Cinzel', serif;
+    font-size:.95rem;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:4px;
+  }
+  .dresscode-sub{
+    font-size:1.05rem;
+    color:var(--bone);
+    margin-bottom:22px;
+  }
+
+  .creatures{
+    list-style:none; padding:0; margin:0 0 30px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px clamp(12px,4vw,24px);
+    max-width:440px;
+    margin-left:auto; margin-right:auto;
+    text-align:left;
+  }
+  .creatures li{
+    font-size:clamp(.9rem,3.4vw,1.02rem);
+    color:var(--bone);
+    position:relative;
+    padding-left:22px;
+  }
+  .creatures li::before{
+    content:"✦";
+    position:absolute; left:0; top:0;
+    color:var(--wine-bright);
+    font-size:.85rem;
+  }
+
+  .forbidden{
+    font-size:clamp(.82rem,3.2vw,.92rem);
+    color:var(--bone-dim);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:16px 6px;
+    margin:0 0 30px;
+    line-height:1.6;
+  }
+  .forbidden b{ color:var(--wine-bright); font-family:'Cinzel', serif; letter-spacing:.05em; }
+
+  .inspiration-note{
+    font-size:clamp(.85rem,3.2vw,.95rem);
+    color:var(--bone-dim);
+    margin-bottom:34px;
+  }
+  .inspiration-note a{ color:var(--gold); text-decoration:none; border-bottom:1px dotted var(--gold); padding:4px 0; }
+  .inspiration-note a:hover{ color:var(--bone); }
+
+  .datetime{
+    font-family:'Cinzel', serif;
+    font-size:clamp(.88rem,3.4vw,1.05rem);
+    letter-spacing:.03em;
+    color:var(--bone);
+    margin-bottom:6px;
+  }
+  .place{
+    font-size:clamp(.85rem,3.2vw,1rem);
+    color:var(--bone-dim);
+    margin-bottom:34px;
+    line-height:1.5;
+  }
+
+  .offering-btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    font-family:'Cinzel', serif;
+    letter-spacing:clamp(.04em,1vw,.12em);
+    text-transform:uppercase;
+    font-size:clamp(.82rem,3.2vw,.92rem);
+    color:var(--bone);
+    text-decoration:none;
+    border:1px solid var(--wine-bright);
+    padding:16px clamp(20px,6vw,34px);
+    width:100%;
+    max-width:380px;
+    min-height:48px;
+    background:linear-gradient(180deg, rgba(92,14,30,.25), rgba(92,14,30,.08));
+    position:relative;
+    transition:all .35s ease;
+  }
+  .offering-btn:hover{
+    background:linear-gradient(180deg, rgba(92,14,30,.55), rgba(92,14,30,.25));
+    box-shadow:0 0 25px rgba(138,23,40,.45);
+    letter-spacing:.16em;
+  }
+  .offering-btn::before{ content:"🩸"; font-size:.9rem; }
+
+  /* =========================================================
+     SECTION 2 — INSPIRAÇÃO
+  ========================================================== */
+  .inspiration{
+    padding:30px clamp(12px,4vw,20px) clamp(60px,10vw,90px);
+    max-width:900px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .inspiration h2{
+    font-family:'Cinzel Decorative', serif;
+    font-size:clamp(1.8rem,5vw,2.6rem);
+    color:var(--bone);
+    margin:6px 0 14px;
+    font-weight:700;
+  }
+  .inspiration p.lead{
+    color:var(--bone-dim);
+    max-width:520px;
+    margin:0 auto 40px;
+    font-style:italic;
+    font-size:clamp(.95rem,3.4vw,1.08rem);
+  }
+  .pin-embed-wrap{
+    border:1px solid var(--line);
+    padding:clamp(20px,5vw,34px) clamp(10px,3vw,20px) clamp(18px,4vw,26px);
+    background:rgba(35,31,30,.4);
+    width:100%;
+    overflow:hidden;
+  }
+  .pin-embed-wrap .eyebrow{ display:block; margin-bottom:18px;}
+  .pin-embed-wrap iframe{ max-width:100% !important; }
+
+  /* =========================================================
+     SECTION 3 — LOCAL
+  ========================================================== */
+  .location{
+    padding:30px clamp(12px,4vw,20px) clamp(70px,12vw,110px);
+    max-width:820px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .location h2{
+    font-family:'Cinzel Decorative', serif;
+    font-size:clamp(1.8rem,5vw,2.6rem);
+    color:var(--bone);
+    margin:6px 0 14px;
+  }
+  .location .addr{
+    font-family:'Cinzel', serif;
+    letter-spacing:.03em;
+    color:var(--bone);
+    font-size:clamp(.88rem,3.4vw,1.05rem);
+    margin-bottom:6px;
+  }
+  .location .addr2{
+    color:var(--bone-dim);
+    font-size:clamp(.82rem,3.2vw,1rem);
+    margin-bottom:36px;
+  }
+  .map-frame{
+    border:1px solid var(--line);
+    padding:clamp(6px,2vw,10px);
+    background:rgba(35,31,30,.4);
+  }
+  .map-frame iframe{
+    width:100%; height:clamp(260px,55vw,420px); border:0; display:block;
+    filter:grayscale(.35) sepia(.25) contrast(1.05);
+  }
+
+  footer{
+    text-align:center;
+    padding:50px 20px 70px;
+    color:var(--bone-dim);
+    font-family:'Cinzel', serif;
+    font-size:.75rem;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+  }
+
+  @media (max-width:640px){
+    .creatures{ grid-template-columns:1fr; }
+    .offering-btn{ width:100%; }
+  }
+
+  @media (max-width:380px){
+    .eyebrow{ letter-spacing:.08em; }
+    .card{ padding:28px 16px 26px; }
+    .divider{ padding:34px 14px; gap:10px; }
+    .divider svg{ width:26px; height:26px; }
+  }
+
+  /* short/landscape phones: hero shouldn't force full viewport height */
+  @media (max-height:480px) and (orientation:landscape){
+    .invite{ min-height:auto; padding-top:70px; padding-bottom:40px; }
+  }
+
+  @supports (padding: max(0px)){
+    .invite{ padding-left:max(clamp(12px,4vw,20px), env(safe-area-inset-left)); padding-right:max(clamp(12px,4vw,20px), env(safe-area-inset-right)); }
+    footer{ padding-bottom:max(70px, env(safe-area-inset-bottom)); }
+  }
+  .page-frame{
+    max-width:900px;
+    margin:0 auto;
+    position:relative;
+  }
+  @media (min-width:940px){
+    .page-frame{
+      border-left:1px solid var(--line);
+      border-right:1px solid var(--line);
+      box-shadow:0 0 80px rgba(0,0,0,.6);
+    }
+    .invite{ min-height:min(100svh, 780px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="fog"></div>
+<div class="grain"></div>
+
+<div class="page-frame">
+
+<!-- ============ SECTION 1: CONVITE ============ -->
+<section class="invite" id="convite">
+  <div class="card">
+    <div class="moon"></div>
+    <p class="eyebrow">Reunião secreta para criaturas eternas</p>
+    <h1 class="title">Trigésima Noite</h1>
+    <p class="subtitle">A corte noturna se reúne uma vez a cada trinta anos</p>
+
+    <p class="desc">Após três décadas entre os mortais, <span class="name">Isabela Melara</span> convoca sua corte noturna para celebrar sua Trigésima Noite.</p>
+
+    <p class="dresscode-label">Dress code</p>
+    <p class="dresscode-sub">Elegância Sobrenatural — compareça assumindo sua verdadeira forma.</p>
+
+    <ul class="creatures">
+      <li>Vampiros Aristocráticos</li>
+      <li>Bruxas elegantes</li>
+      <li>Criaturas lunares</li>
+      <li>Féericos sombrios</li>
+      <li>Alquimistas ocultistas</li>
+      <li>Anjos caídos e demônios</li>
+    </ul>
+
+    <p class="forbidden"><b>Proibido:</b> maquiagem caricata de Halloween, cosplay, fantasia cômica, gore.</p>
+
+    <p class="inspiration-note">Precisa de referências para compor seu look? <a href="#inspiracao">Veja as inspirações da corte</a>, logo abaixo.</p>
+
+    <p class="datetime">🌙 A Noite da Convergência — 12 de setembro de 2026, às 20h</p>
+    <p class="place">Alameda Pérola, 572 (Residencial 9) — Alphaville, Santana de Parnaíba/SP</p>
+
+    <a class="offering-btn" href="#" target="_blank" rel="noopener">Traga sua oferenda para o ritual</a>
+  </div>
+</section>
+
+<div class="divider">
+  <div class="rule"></div>
+  <svg viewBox="0 0 24 24" fill="none" stroke="#9c7a3f" stroke-width="1"><path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z"/></svg>
+  <div class="rule"></div>
+</div>
+
+<!-- ============ SECTION 2: INSPIRAÇÃO ============ -->
+<section class="inspiration" id="inspiracao">
+  <p class="eyebrow">Vestimentas do além</p>
+  <h2>Referências para o seu look</h2>
+  <p class="lead">Um mural de looks góticos vitorianos para guiar sua transformação antes da Trigésima Noite.</p>
+
+  <div class="pin-embed-wrap">
+    <span class="eyebrow">Mural completo no Pinterest</span>
+    <a data-pin-do="embedBoard" data-pin-scale-height="240" data-pin-scale-width="80"
+       href="https://br.pinterest.com/spaceoddityxx/clothes/"></a>
+  </div>
+</section>
+
+<div class="divider">
+  <div class="rule"></div>
+  <svg viewBox="0 0 24 24" fill="none" stroke="#9c7a3f" stroke-width="1"><circle cx="12" cy="12" r="9"/><path d="M12 3 A9 9 0 0 0 12 21 Z" fill="#9c7a3f" stroke="none"/></svg>
+  <div class="rule"></div>
+</div>
+
+<!-- ============ SECTION 3: LOCAL ============ -->
+<section class="location" id="local">
+  <p class="eyebrow">O local do ritual</p>
+  <h2>Onde a corte se reúne</h2>
+  <p class="addr">Alameda Pérola, 572 (Residencial 9)</p>
+  <p class="addr2">Alphaville, Santana de Parnaíba/SP — 12 de setembro de 2026, às 20h</p>
+
+  <div class="map-frame">
+    <iframe
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      src="https://www.google.com/maps?q=Alameda+P%C3%A9rola,+572,+Alphaville,+Santana+de+Parnaiba,+SP&output=embed">
+    </iframe>
+  </div>
+</section>
+
+<footer>Trigésima Noite &middot; 12.09.2026 &middot; Somente para os convocados</footer>
+
+</div><!-- /.page-frame -->
+
+<script async defer src="//assets.pinterest.com/js/pinit.js"></script>
+
+</body>
+</html>
